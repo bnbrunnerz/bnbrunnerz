@@ -307,7 +307,7 @@
       <div class="status-grid">
         <div class="status-cell"><div class="n">10,000</div><div class="l">Total supply. Hard cap in the contract, every image unique.</div></div>
         <div class="status-cell"><div class="n" id="mMintedCell">300</div><div class="l">Minted so far. The newest runners are shown in Recently Minted below.</div></div>
-        <div class="status-cell"><div class="n">9,700</div><div class="l">Remaining supply. Available to mint now — mint is open and live.</div></div>
+        <div class="status-cell"><div class="n" id="mRemainCell">9,700</div><div class="l">Remaining supply. Available to mint now — mint is open and live.</div></div>
         <div class="status-cell"><div class="n"><em>FREE</em> first</div><div class="l">First mint per wallet is free, then $0.10 each. Max 10 per wallet.</div></div>
       </div>
     </div>
@@ -888,6 +888,8 @@
     el("mBar").setAttribute("aria-valuenow", String(total));
     var mintedCell = el("mMintedCell");
     if (mintedCell) mintedCell.textContent = fmt(total);
+    var remainCell = el("mRemainCell");
+    if (remainCell) remainCell.textContent = fmt(MAX_SUPPLY - total);
     el("mOpen").textContent = "OPEN · LIVE";
     el("mRemain").textContent = fmt(MAX_SUPPLY - total);
   }
