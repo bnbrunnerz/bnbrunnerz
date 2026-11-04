@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BNB Runnerz (BNBR) - 10,000 Pixel Runners on BNB</title>
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#0b0b0f;color:#eee;margin:0}
+.wrap{max-width:900px;margin:0 auto;padding:20px}
+h1{font-size:36px;margin:10px 0 4px} h2{margin-top:36px}
+.tag{color:#00ff6e;font-weight:700}
+.card{background:#15151d;border:1px solid #333;border-radius:12px;padding:16px;margin:14px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.runner{background:#222;border:1px solid #333;border-radius:10px;padding:10px;text-align:center}
+.runner svg{width:100%;height:auto;image-rendering:pixelated;background:#ddd}
+.small{color:#aaa;font-size:14px} .warn{color:#ffb300;font-weight:700}
+button{background:#00ff6e;color:#000;border:0;border-radius:8px;padding:12px 16px;font-weight:700;cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+a{color:#00ff6e}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>BNB Runnerz</h1>
+<p class="tag">10,000 pixel runners on BNB. Agent ID required. First mint free.</p>
+<p>BNB Runnerz (BNBR) is a fully on-chain 32x32 pixel runner collection on BNB Smart Chain. Every runner is generated on-chain from a unique permutation of its tokenId, no IPFS images.</p>
+<div class="card">
+<h2>Mint</h2>
+<p class="warn">Mint is NOT live yet. Contract is built and ready for deploy, but not deployed on-chain yet. Do not trust any other contract address for BNB Runnerz.</p>
+<ul>
+<li>Supply: 10,000, max 10 per wallet</li>
+<li>Price: 1st mint per wallet FREE, next mints $0.10 each via Chainlink BNB/USD</li>
+<li>Agent ID gate: mint only, Binance Agent ID required for everyone including owner</li>
+<li>Royalty: 1% fixed (ERC-2981)</li>
+<li>Treasury: 100 tokens to the payout wallet, minted by owner first before public mint</li>
+<li>Payout: 0x5b92f2d1231148a711619a3880fd794fc6ac4e04, immutable, paid mint proceeds forwarded in the same transaction, contract balance stays 0</li>
+</ul>
+<button disabled>Mint coming soon</button>
+<p class="small">When mint opens, minting will be through the deploy/mint page, with OKX wallet on BNB chain 56. No private key is ever asked for on this site.</p>
+</div>
+<div class="card">
+<h2>Sample runners</h2>
+<p class="small">These are generated with the same trait logic as the contract: Background, Hood, Jacket, Pants, Visor, Accessory. Reload to see new random runners.</p>
+<div class="grid" id="runners"></div>
+</div>
+<div class="card">
+<h2>Traits</h2>
+<ul>
+<li>Background: 12 colours</li>
+<li>Hood: 8 colours (Black, Purple, Green, Red, Navy, Charcoal, Brown, Teal)</li>
+<li>Jacket: 8 colours (Blue, Red, Black, Gold, Purple, Green, Orange, Teal)</li>
+<li>Pants: 6 colours (Dark, Black, Gray, Navy, Brown, Olive)</li>
+<li>Visor: 6 colours (Cyan, Yellow, Pink, Green, Orange, White)</li>
+<li>Accessory: 5 (None, Cap, Headphones, Mask, Crown)</li>
+</ul>
+<p>Total combinations: 138,240, above the 10,000 supply.</p>
+</div>
+<div class="card">
+<h2>FAQ</h2>
+<p><b>What do I need to mint?</b><br>A Binance Agent ID, an OKX wallet on BNB chain 56, and BNB for gas. First mint per wallet is free, rest are $0.10 each.</p>
+<p><b>Can I trade BNB Runnerz?</b><br>Yes, transfers are open to everyone. Only minting is gated by Agent ID.</p>
+<p><b>Where does mint money go?</b><br>Paid mint proceeds go in the same mint transaction to the payout wallet. The contract keeps 0 balance and has no withdraw function for mint proceeds.</p>
+<p><b>Is the art on-chain?</b><br>Yes, fully on-chain SVG, 32x32 pixel runner, generated from a unique permutation of the tokenId.</p>
+</div>
+<p class="small">BNB Runnerz is a new collection inspired by the CC0 pixel runner style, with its own name, art and contract. It is not the original Chain Runners collection.</p>
+</div>
+<script>
+const bgs=["#E6EBEF","#EDE7F0","#F2EFE9","#FFF3D6","#D6EAF8","#FADBD8","#D5F5E3","#FEF9E7","#EBDEF0","#D6DBDF","#FDEDEC","#EAEDED"];
+const hoods=["#1E1E1E","#5A4A6B","#145A4A","#7B241C","#3A4A63","#2F3338","#6B4226","#148F77"];
+const jackets=["#3250A0","#B03A2E","#1E1E1E","#B08D3E","#7D3C98","#1E8449","#CA6F1E","#148F77"];
+const pantsC=["#282833","#000000","#5D6D7E","#1A5276","#4E342E","#5D6D2E"];
+const visors=["#00DCDC","#FFB400","#FF0078","#00C878","#FF6B35","#FFFFFF"];
+const accs=["None","Cap","Headphones","Mask","Crown"];
+function r(x,y,w,h,f){return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${f}"/>`}
+function runner(seed){
+  let s=seed; const rnd=()=>{s=(s*1103515245+12345)&0x7fffffff; return s/0x7fffffff};
+  const bg=bgs[Math.floor(rnd()*12)], hood=hoods[Math.floor(rnd()*8)], jacket=jacket[Math.floor(rnd()*8)], pants=pantsC[Math.floor(rnd()*6)], visor=visors[Math.floor(rnd()*6)], acc=accs[Math.floor(rnd()*5)];
+  let svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" shape-rendering="crispEdges">${r(0,0,32,32,bg)}${r(11,23,5,6,pants)}${r(16,23,5,6,pants)}${r(10,29,6,2,"#000")}${r(16,29,6,2,"#000")}${r(7,14,3,8,jacket)}${r(22,14,3,8,jacket)}${r(7,22,3,2,"#EBBEA0")}${r(22,22,3,2,"#EBBEA0")}${r(10,14,12,9,jacket)}${r(15,14,2,9,"#000")}${r(9,5,3,9,hood)}${r(20,5,3,9,hood)}${r(10,3,12,3,hood)}${r(12,6,8,8,"#EBBEA0")}${r(12,8,8,3,visor)}${r(14,12,4,1,"#000")}`;
+  if(acc==="Cap") svg+=r(10,2,12,2,"#C0392B")+r(20,3,6,1,"#C0392B");
+  if(acc==="Headphones") svg+=r(10,3,12,2,"#000")+r(9,8,2,5,"#000")+r(21,8,2,5,"#000");
+  if(acc==="Mask") svg+=r(12,11,8,3,"#282828");
+  if(acc==="Crown") svg+=r(11,1,10,2,"#D4AC0D");
+  svg+="</svg>";
+  return {svg, label:`${acc} / ${visor}`};
+}
+const el=document.getElementById("runners");
+for(let i=0;i<8;i++){ const t=runner(Date.now()+i*7919); const d=document.createElement("div"); d.className="runner"; d.innerHTML=t.svg+`<div class="small">${t.label}</div>`; el.appendChild(d); }
+</script>
+</body>
+</html>
