@@ -1,90 +1,415 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BNB Runnerz (BNBR) - 10,000 Pixel Runners on BNB</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<meta name="description" content="BNB Runnerz (BNBR). 10,000 fully on-chain 32x32 pixel runners on BNB Chain, every one unique. First mint free, then $0.10. Agent ID required to mint. Mint coming soon." />
+<link rel="icon" href="data:," />
+<title>BNB Runnerz — 10,000 Pixel Runners on BNB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
-body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#0b0b0f;color:#eee;margin:0}
-.wrap{max-width:900px;margin:0 auto;padding:20px}
-h1{font-size:36px;margin:10px 0 4px} h2{margin-top:36px}
-.tag{color:#00ff6e;font-weight:700}
-.card{background:#15151d;border:1px solid #333;border-radius:12px;padding:16px;margin:14px 0}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
-.runner{background:#222;border:1px solid #333;border-radius:10px;padding:10px;text-align:center}
-.runner svg{width:100%;height:auto;image-rendering:pixelated;background:#ddd}
-.small{color:#aaa;font-size:14px} .warn{color:#ffb300;font-weight:700}
-button{background:#00ff6e;color:#000;border:0;border-radius:8px;padding:12px 16px;font-weight:700;cursor:pointer}
-button:disabled{opacity:.5;cursor:not-allowed}
-a{color:#00ff6e}
+  :root{
+    color-scheme: light dark;
+    --bg:#E9EDF1;
+    --bg-2:#DFE5EB;
+    --panel:#FFFFFF;
+    --panel-2:#F0F3F5;
+    --ink:#14171C;
+    --ink-soft:#45525F;
+    --ink-faint:#6B7885;
+    --line:#C4CFDA;
+    --line-strong:#14171C;
+    --cyan:#00B8B8;
+    --cyan-bright:#00DCDC;
+    --cyan-text:#007A7A;
+    --gold:#B08D3E;
+    --amber-bg:#FFF3D6;
+    --amber-ink:#6B4E00;
+    --amber-line:#E3C87A;
+    --shadow:6px 6px 0 #14171C;
+    --radius:14px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0C0E11;
+      --bg-2:#111419;
+      --panel:#161A20;
+      --panel-2:#1C2129;
+      --ink:#EDF1F5;
+      --ink-soft:#A9B4C0;
+      --ink-faint:#7C8794;
+      --line:#2B323C;
+      --line-strong:#EDF1F5;
+      --cyan:#00DCDC;
+      --cyan-bright:#00DCDC;
+      --cyan-text:#00DCDC;
+      --gold:#C9A44E;
+      --amber-bg:#2A2110;
+      --amber-ink:#F2CD72;
+      --amber-line:#5C4A1E;
+      --shadow:6px 6px 0 #000000;
+    }
+  }
+
+  /* One font for the whole page: Pixelify Sans, a clear readable pixel font */
+  *{box-sizing:border-box; font-family:"Pixelify Sans", ui-monospace, monospace}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-size:17px;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%; display:block}
+  a{color:var(--cyan-text); text-underline-offset:3px}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 20px}
+  section{padding:58px 0 8px}
+  h1,h2,h3{line-height:1.2; margin:0; font-weight:700}
+  h2{font-size:clamp(26px,4.5vw,36px)}
+  h3{font-size:18px}
+  .sec-head{margin-bottom:24px; max-width:660px}
+  .sec-head p{color:var(--ink-soft); margin:10px 0 0; font-size:16.5px}
+
+  /* ---------- status bar ---------- */
+  .statusbar{background:var(--ink); color:var(--bg); font-size:13.5px}
+  .statusbar .wrap{display:flex; flex-wrap:wrap; gap:6px 24px; align-items:center; padding-top:10px; padding-bottom:10px}
+  .statusbar .dot{width:8px; height:8px; background:var(--cyan-bright); display:inline-block; margin-right:9px; box-shadow:0 0 0 3px rgba(0,220,220,.25)}
+  .statusbar a{color:var(--cyan-bright)}
+
+  /* ---------- hero ---------- */
+  .hero{padding:46px 0 0}
+  .hero-grid{display:grid; grid-template-columns:1.12fr .88fr; gap:38px; align-items:center}
+  .status-pill{
+    display:inline-flex; align-items:center; gap:9px;
+    background:var(--amber-bg); color:var(--amber-ink);
+    border:1.5px solid var(--amber-line); border-radius:999px;
+    font-size:13.5px; font-weight:600;
+    padding:7px 15px 7px 11px;
+  }
+  .status-pill .pulse{width:9px; height:9px; border-radius:50%; background:#E8A100; flex:none}
+  .hero h1{font-size:clamp(44px,8.5vw,78px); margin:18px 0 0}
+  .hero h1 .z{color:var(--cyan-text)}
+  .hero .lead{font-size:clamp(17px,2.4vw,20px); color:var(--ink-soft); margin:16px 0 0; max-width:34em}
+  .hero .lead strong{color:var(--ink)}
+  .hero-cta{display:flex; flex-wrap:wrap; gap:12px; margin-top:27px}
+  .btn{
+    display:inline-flex; align-items:center; gap:9px;
+    font-size:15px; font-weight:700;
+    text-decoration:none; padding:13px 21px; border-radius:10px; border:2px solid var(--line-strong);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .btn-primary{background:var(--cyan-bright); color:#002E2E; box-shadow:4px 4px 0 var(--line-strong)}
+  .btn-primary:hover{transform:translate(-1px,-1px); box-shadow:5px 5px 0 var(--line-strong)}
+  .btn-ghost{background:var(--panel); color:var(--ink)}
+  .btn-ghost:hover{transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--line-strong)}
+  .hero-note{font-size:14.5px; color:var(--ink-faint); margin-top:17px; max-width:37em}
+
+  .hero-art{position:relative; margin:0}
+  .hero-frame{
+    background:var(--panel); border:2px solid var(--line-strong); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:14px;
+  }
+  .hero-frame img{image-rendering:pixelated; border-radius:6px; width:100%; height:auto}
+  .hero-frame figcaption{
+    display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    font-size:13px; color:var(--ink-soft); padding:12px 2px 2px;
+  }
+  .hero-frame figcaption b{color:var(--ink)}
+  .hero-badge{
+    position:absolute; top:-14px; right:14px; transform:rotate(3deg);
+    background:var(--ink); color:var(--bg); font-size:13px; font-weight:700;
+    padding:7px 13px; border-radius:6px; z-index:1;
+  }
+
+  .stat-strip{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:46px;
+    background:var(--panel); border:2px solid var(--line-strong); border-radius:var(--radius); overflow:hidden;
+  }
+  .stat{padding:19px 18px 16px; border-left:1.5px solid var(--line)}
+  .stat:first-child{border-left:0}
+  .stat .n{font-weight:700; font-size:clamp(21px,3.4vw,29px); line-height:1.15}
+  .stat .n em{font-style:normal; color:var(--cyan-text)}
+  .stat .l{font-size:13.5px; color:var(--ink-soft); margin-top:6px; line-height:1.55}
+
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+
+  /* ---------- minted status ---------- */
+  .status-card{background:var(--panel); border:2px solid var(--line-strong); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px}
+  .status-top{display:flex; flex-wrap:wrap; gap:8px 18px; align-items:baseline; justify-content:space-between}
+  .status-top .big{font-size:clamp(30px,5vw,42px); font-weight:700; line-height:1.1}
+  .status-top .big em{font-style:normal; color:var(--cyan-text)}
+  .status-top .pct{font-size:15px; color:var(--ink-soft)}
+  .progress{margin-top:16px; height:16px; background:var(--panel-2); border:1.5px solid var(--line); border-radius:999px; overflow:hidden}
+  .progress .fill{height:100%; width:0%; background:var(--cyan-bright)}
+  .status-note{margin:16px 0 0; font-size:14.5px; color:var(--ink-soft)}
+  .status-note b{color:var(--ink)}
+  .status-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:16px}
+  .status-cell{background:var(--panel); border:1.5px solid var(--line); border-radius:var(--radius); padding:18px}
+  .status-cell .n{font-weight:700; font-size:clamp(21px,3.2vw,27px); line-height:1.15}
+  .status-cell .n em{font-style:normal; color:var(--cyan-text)}
+  .status-cell .l{font-size:13.5px; color:var(--ink-soft); margin-top:6px; line-height:1.55}
+
+  /* ---------- recently minted ---------- */
+  .recent-empty{background:var(--panel); border:1.5px dashed var(--line); border-radius:var(--radius); padding:30px 22px; text-align:center}
+  .recent-empty .t{font-weight:700; font-size:18px}
+  .recent-empty p{margin:8px auto 0; color:var(--ink-soft); font-size:15.5px; max-width:40em}
+
+  /* ---------- mint ---------- */
+  .mint-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start}
+  .mint-card{background:var(--panel); border:2px solid var(--line-strong); border-radius:var(--radius); padding:22px; box-shadow:var(--shadow)}
+  .mint-card.plain{box-shadow:none; border:1.5px solid var(--line)}
+  .fact-list{list-style:none; margin:16px 0 0; padding:0}
+  .fact-list li{display:flex; justify-content:space-between; gap:16px; padding:10px 0; border-top:1px solid var(--line); font-size:15.5px}
+  .fact-list li:first-child{border-top:0; padding-top:2px}
+  .fact-list .k{color:var(--ink-soft)}
+  .fact-list .v{font-weight:600; text-align:right}
+  .fact-list .v.addr{font-weight:500; font-size:13.5px; word-break:break-all}
+  .warn-box{margin-top:18px; background:var(--amber-bg); border:1.5px solid var(--amber-line); color:var(--amber-ink); border-radius:10px; padding:14px 16px; font-size:15px}
+  .warn-box b{font-weight:700}
+  .steps{list-style:none; counter-reset:step; margin:16px 0 0; padding:0}
+  .steps li{counter-increment:step; position:relative; padding:0 0 21px 52px}
+  .steps li:last-child{padding-bottom:2px}
+  .steps li::before{
+    content:counter(step); position:absolute; left:0; top:0; width:36px; height:36px;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:16px;
+    background:var(--cyan-bright); color:#002E2E; border:2px solid var(--line-strong); border-radius:8px;
+  }
+  .steps li:not(:last-child)::after{content:""; position:absolute; left:18px; top:42px; bottom:2px; width:2px; background:var(--line)}
+  .steps .t{font-weight:700}
+  .steps p{margin:3px 0 0; font-size:15.5px; color:var(--ink-soft)}
+
+  /* ---------- faq ---------- */
+  .faq-list{display:grid; gap:12px}
+  details.faq{background:var(--panel); border:1.5px solid var(--line); border-radius:var(--radius); padding:4px 20px}
+  details.faq summary{
+    cursor:pointer; list-style:none; font-weight:700; font-size:16.5px; padding:15px 0;
+    display:flex; justify-content:space-between; gap:14px; align-items:center;
+  }
+  details.faq summary::-webkit-details-marker{display:none}
+  details.faq summary .plus{color:var(--cyan-text); font-size:20px; flex:none; font-weight:700}
+  details.faq[open] summary .plus{transform:rotate(45deg)}
+  details.faq .a{padding:0 0 17px; color:var(--ink-soft); font-size:15.5px; max-width:56em}
+  details.faq .a p{margin:0 0 8px}
+
+  /* ---------- footer ---------- */
+  footer{margin-top:66px; background:var(--ink); color:var(--bg)}
+  footer .wrap{padding-top:38px; padding-bottom:38px}
+  .foot-grid{display:flex; flex-wrap:wrap; gap:26px 48px; justify-content:space-between; align-items:flex-start}
+  footer .brand{font-weight:700; font-size:24px}
+  footer .brand .z{color:var(--cyan-bright)}
+  footer p{color:#B9C4CF; font-size:14.5px; max-width:44em; margin:10px 0 0}
+  footer .links{display:flex; flex-direction:column; gap:9px; font-size:14.5px}
+  footer .links a{color:var(--cyan-bright); text-decoration:none}
+  footer .links a:hover{text-decoration:underline}
+  .foot-base{border-top:1px solid rgba(140,155,170,.35); margin-top:28px; padding-top:19px; font-size:13px; color:#9AA7B3; display:flex; flex-wrap:wrap; gap:6px 24px}
+
+  @media (max-width: 900px){
+    .status-grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width: 760px){
+    .hero-grid{grid-template-columns:1fr; gap:26px}
+    .hero-art{max-width:420px}
+    .mint-grid{grid-template-columns:1fr}
+    .stat-strip{grid-template-columns:repeat(2,1fr)}
+    .stat:nth-child(3){border-left:0}
+    .stat{border-top:1.5px solid var(--line)}
+    .stat:nth-child(-n+2){border-top:0}
+    section{padding-top:46px}
+  }
+  @media (max-width: 460px){
+    .fact-list li{flex-direction:column; gap:2px}
+    .fact-list .v{text-align:left}
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-<h1>BNB Runnerz</h1>
-<p class="tag">10,000 pixel runners on BNB. Agent ID required. First mint free.</p>
-<p>BNB Runnerz (BNBR) is a fully on-chain 32x32 pixel runner collection on BNB Smart Chain. Every runner is generated on-chain from a unique permutation of its tokenId, no IPFS images.</p>
-<div class="card">
-<h2>Mint</h2>
-<p class="warn">Mint is NOT live yet. Contract is built and ready for deploy, but not deployed on-chain yet. Do not trust any other contract address for BNB Runnerz.</p>
-<ul>
-<li>Supply: 10,000, max 10 per wallet</li>
-<li>Price: 1st mint per wallet FREE, next mints $0.10 each via Chainlink BNB/USD</li>
-<li>Agent ID gate: mint only, Binance Agent ID required for everyone including owner</li>
-<li>Royalty: 1% fixed (ERC-2981)</li>
-<li>Treasury: 100 tokens to the payout wallet, minted by owner first before public mint</li>
-<li>Payout: 0x5b92f2d1231148a711619a3880fd794fc6ac4e04, immutable, paid mint proceeds forwarded in the same transaction, contract balance stays 0</li>
-</ul>
-<button disabled>Mint coming soon</button>
-<p class="small">When mint opens, minting will be through the deploy/mint page, with OKX wallet on BNB chain 56. No private key is ever asked for on this site.</p>
+
+<div class="statusbar">
+  <div class="wrap">
+    <span><span class="dot"></span>MINT COMING SOON</span>
+    <span>CONTRACT NOT DEPLOYED YET</span>
+    <span>FOLLOW <a href="https://x.com/BNBRunnerz" target="_blank" rel="noopener">@BNBRunnerz</a> FOR THE OPEN ANNOUNCEMENT</span>
+  </div>
 </div>
-<div class="card">
-<h2>Sample runners</h2>
-<p class="small">These are generated with the same trait logic as the contract: Background, Hood, Jacket, Pants, Visor, Accessory. Reload to see new random runners.</p>
-<div class="grid" id="runners"></div>
-</div>
-<div class="card">
-<h2>Traits</h2>
-<ul>
-<li>Background: 12 colours</li>
-<li>Hood: 8 colours (Black, Purple, Green, Red, Navy, Charcoal, Brown, Teal)</li>
-<li>Jacket: 8 colours (Blue, Red, Black, Gold, Purple, Green, Orange, Teal)</li>
-<li>Pants: 6 colours (Dark, Black, Gray, Navy, Brown, Olive)</li>
-<li>Visor: 6 colours (Cyan, Yellow, Pink, Green, Orange, White)</li>
-<li>Accessory: 5 (None, Cap, Headphones, Mask, Crown)</li>
-</ul>
-<p>Total combinations: 138,240, above the 10,000 supply.</p>
-</div>
-<div class="card">
-<h2>FAQ</h2>
-<p><b>What do I need to mint?</b><br>A Binance Agent ID, an OKX wallet on BNB chain 56, and BNB for gas. First mint per wallet is free, rest are $0.10 each.</p>
-<p><b>Can I trade BNB Runnerz?</b><br>Yes, transfers are open to everyone. Only minting is gated by Agent ID.</p>
-<p><b>Where does mint money go?</b><br>Paid mint proceeds go in the same mint transaction to the payout wallet. The contract keeps 0 balance and has no withdraw function for mint proceeds.</p>
-<p><b>Is the art on-chain?</b><br>Yes, fully on-chain SVG, 32x32 pixel runner, generated from a unique permutation of the tokenId.</p>
-</div>
-<p class="small">BNB Runnerz is a new collection inspired by the CC0 pixel runner style, with its own name, art and contract. It is not the original Chain Runners collection.</p>
-</div>
-<script>
-const bgs=["#E6EBEF","#EDE7F0","#F2EFE9","#FFF3D6","#D6EAF8","#FADBD8","#D5F5E3","#FEF9E7","#EBDEF0","#D6DBDF","#FDEDEC","#EAEDED"];
-const hoods=["#1E1E1E","#5A4A6B","#145A4A","#7B241C","#3A4A63","#2F3338","#6B4226","#148F77"];
-const jackets=["#3250A0","#B03A2E","#1E1E1E","#B08D3E","#7D3C98","#1E8449","#CA6F1E","#148F77"];
-const pantsC=["#282833","#000000","#5D6D7E","#1A5276","#4E342E","#5D6D2E"];
-const visors=["#00DCDC","#FFB400","#FF0078","#00C878","#FF6B35","#FFFFFF"];
-const accs=["None","Cap","Headphones","Mask","Crown"];
-function r(x,y,w,h,f){return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${f}"/>`}
-function runner(seed){
-  let s=seed; const rnd=()=>{s=(s*1103515245+12345)&0x7fffffff; return s/0x7fffffff};
-  const bg=bgs[Math.floor(rnd()*12)], hood=hoods[Math.floor(rnd()*8)], jacket=jacket[Math.floor(rnd()*8)], pants=pantsC[Math.floor(rnd()*6)], visor=visors[Math.floor(rnd()*6)], acc=accs[Math.floor(rnd()*5)];
-  let svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" shape-rendering="crispEdges">${r(0,0,32,32,bg)}${r(11,23,5,6,pants)}${r(16,23,5,6,pants)}${r(10,29,6,2,"#000")}${r(16,29,6,2,"#000")}${r(7,14,3,8,jacket)}${r(22,14,3,8,jacket)}${r(7,22,3,2,"#EBBEA0")}${r(22,22,3,2,"#EBBEA0")}${r(10,14,12,9,jacket)}${r(15,14,2,9,"#000")}${r(9,5,3,9,hood)}${r(20,5,3,9,hood)}${r(10,3,12,3,hood)}${r(12,6,8,8,"#EBBEA0")}${r(12,8,8,3,visor)}${r(14,12,4,1,"#000")}`;
-  if(acc==="Cap") svg+=r(10,2,12,2,"#C0392B")+r(20,3,6,1,"#C0392B");
-  if(acc==="Headphones") svg+=r(10,3,12,2,"#000")+r(9,8,2,5,"#000")+r(21,8,2,5,"#000");
-  if(acc==="Mask") svg+=r(12,11,8,3,"#282828");
-  if(acc==="Crown") svg+=r(11,1,10,2,"#D4AC0D");
-  svg+="</svg>";
-  return {svg, label:`${acc} / ${visor}`};
-}
-const el=document.getElementById("runners");
-for(let i=0;i<8;i++){ const t=runner(Date.now()+i*7919); const d=document.createElement("div"); d.className="runner"; d.innerHTML=t.svg+`<div class="small">${t.label}</div>`; el.appendChild(d); }
-</script>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="status-pill"><span class="pulse"></span> Mint opens soon. Contract is built, deploy is next.</span>
+        <h1>BNB<br />RUNNER<span class="z">Z</span></h1>
+        <p class="lead"><strong>10,000 pixel runners on BNB Chain, fully on-chain, every one unique.</strong> Each runner is a 32×32 pixel character generated by the contract itself from its token ID. No IPFS, no hosted images. First mint per wallet is free.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="https://x.com/BNBRunnerz" target="_blank" rel="noopener">Follow @BNBRunnerz on X</a>
+          <a class="btn btn-ghost" href="#mint-status">Minted status</a>
+        </div>
+        <p class="hero-note">Minting will need a Binance Agent ID and a wallet on BNB Chain (56). The official contract address will be published here and on X only after deploy. Any other address claiming to be BNB Runnerz is not official.</p>
+      </div>
+      <figure class="hero-art">
+        <span class="hero-badge">FULLY ON-CHAIN</span>
+        <div class="hero-frame">
+          <img src="data:image/png;base64,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AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAg2E4PYI0+vJle8CN59c/0AmBp/KJfe5oewAq5QAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEm8P+OL2B1fnt8d30hB/I0+76TC9fvb4608vAt7h7f3eml/2iXzvfLwr/xwUaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAINhOD2CNnnbX0xMAFswvCrNcoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAACCzWF/nN4Aq3Zx+fv0BGBhHu730xNg1VygAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACAQ0AAAEAhoAAAIBDQAAgYAGAIBAQAMAQCCgAQAgENAAABAIaAAACDaH/XF6AwAALIYLNAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEAgoAEAIBDQAAAQCGgAAAgENAAABAIaAAACAQ0AAIGABgCAQEADAEDwBWAXQgky9rTGAAAAAElFTkSuQmCC" alt="BNB Runnerz pixel runner character: black hood, cyan visor and blue jacket, pixel art" width="960" height="960" />
+          <figcaption><span><b>BNB Runnerz</b> · pixel runner</span><span>32×32 · generated on-chain</span></figcaption>
+        </div>
+      </figure>
+    </div>
+
+    <div class="stat-strip" role="list">
+      <div class="stat" role="listitem"><div class="n">10,000</div><div class="l">Total supply, and every single one is a unique image. Hard cap in the contract.</div></div>
+      <div class="stat" role="listitem"><div class="n"><em>FREE</em> first</div><div class="l">First mint per wallet is free. Every mint after that is $0.10, priced in BNB.</div></div>
+      <div class="stat" role="listitem"><div class="n">10 <em>/ wallet</em></div><div class="l">Max 10 runners per wallet on public mint. The treasury mint is separate, see below.</div></div>
+      <div class="stat" role="listitem"><div class="n">100<em>%</em> on-chain</div><div class="l">Art and metadata are generated on-chain as SVG. Nothing to disappear.</div></div>
+    </div>
+  </div>
+
+</header>
+
+<main>
+  <section id="mint-status">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Minted status</h2>
+        <p>Mint has not opened yet. The contract is built and deploy is next, so nothing has been minted so far. This panel tracks the count once minting starts.</p>
+      </div>
+      <div class="status-card">
+        <div class="status-top">
+          <div class="big">0 <em>/ 10,000</em> minted</div>
+          <div class="pct">0% of supply</div>
+        </div>
+        <div class="progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="10000" aria-label="Minted progress"><div class="fill"></div></div>
+        <p class="status-note">Mint status: <b>Coming soon</b> · Contract: <b>not deployed yet</b> · Remaining: <b>10,000</b></p>
+      </div>
+      <div class="status-grid">
+        <div class="status-cell"><div class="n">10,000</div><div class="l">Total supply. Hard cap in the contract, every image unique.</div></div>
+        <div class="status-cell"><div class="n">9,900</div><div class="l">Public supply. What public wallets can mint once mint opens.</div></div>
+        <div class="status-cell"><div class="n">100</div><div class="l">Treasury mint. Owner mint to the payout wallet, before public open.</div></div>
+        <div class="status-cell"><div class="n"><em>FREE</em> first</div><div class="l">First mint per wallet is free, then $0.10 each. Max 10 per wallet.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="recent">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Recently minted</h2>
+        <p>The newest runners, in the order they were minted, newest first.</p>
+      </div>
+      <div class="recent-empty">
+        <div class="t">No runners minted yet</div>
+        <p>Mint has not opened and the contract is not deployed yet, so there is nothing to show here. Once minting starts, the latest minted runners will appear in this section.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="mint">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Mint facts</h2>
+        <p>The contract is compiled and ready. It is not deployed yet, so there is no contract address and no mint button on this page. When deploy is done, minting opens from here.</p>
+      </div>
+      <div class="mint-grid">
+        <div class="mint-card">
+          <h3>The deal</h3>
+          <ul class="fact-list">
+            <li><span class="k">Collection</span><span class="v">BNB Runnerz (BNBR)</span></li>
+            <li><span class="k">Chain</span><span class="v">BNB Smart Chain · 56</span></li>
+            <li><span class="k">Supply</span><span class="v">10,000 · all unique</span></li>
+            <li><span class="k">Max per wallet</span><span class="v">10</span></li>
+            <li><span class="k">Price</span><span class="v">1st free · then $0.10 each</span></li>
+            <li><span class="k">Pricing source</span><span class="v">Chainlink BNB/USD feed</span></li>
+            <li><span class="k">Mint gate</span><span class="v">Binance Agent ID required</span></li>
+            <li><span class="k">Royalty</span><span class="v">1% fixed (ERC-2981)</span></li>
+            <li><span class="k">Treasury</span><span class="v">100 · owner mint to payout wallet, before public open, outside the public 10/wallet cap</span></li>
+            <li><span class="k">Contract status</span><span class="v">Built · not deployed yet</span></li>
+          </ul>
+          <div class="warn-box"><b>Stay safe:</b> until the deployed address is posted here and on <a href="https://x.com/BNBRunnerz" target="_blank" rel="noopener">@BNBRunnerz</a>, do not mint from any link or address claiming to be BNB Runnerz. This site never asks for a private key or seed phrase.</div>
+        </div>
+        <div class="mint-card plain">
+          <h3>How minting will work</h3>
+          <ol class="steps">
+            <li><span class="t">Get a Binance Agent ID</span><p>Minting is gated by Agent ID for everyone, owner included. No Agent ID, no public mint. Trading and transfers are not gated.</p></li>
+            <li><span class="t">Open this page in your wallet browser</span><p>Use OKX Wallet on BNB Chain. The page checks the chain and switches to BNB (56) when you connect.</p></li>
+            <li><span class="t">Mint your free runner first</span><p>The first mint from your wallet costs only gas. After that, each runner is $0.10 worth of BNB, up to 10 per wallet in total.</p></li>
+            <li><span class="t">Your runner appears on-chain</span><p>The art is generated by the contract from your token ID. It shows in your wallet and on marketplaces straight from the chain.</p></li>
+          </ol>
+          <ul class="fact-list" style="margin-top:20px">
+            <li><span class="k">Paid mint proceeds</span><span class="v">Forwarded in the same transaction</span></li>
+            <li><span class="k">Payout wallet</span><span class="v addr">0x5b92f2d1231148a711619a3880fd794fc6ac4e04</span></li>
+            <li><span class="k">Contract balance</span><span class="v">Stays 0 · no withdraw function</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Questions</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq">
+          <summary>When does mint open?<span class="plus">+</span></summary>
+          <div class="a"><p>Right after the contract is deployed and the treasury is minted. There is no fixed date yet. The open announcement goes out on X first, and this page updates with the contract address and mint button at the same time.</p></div>
+        </details>
+        <details class="faq">
+          <summary>What do I need to mint?<span class="plus">+</span></summary>
+          <div class="a"><p>A Binance Agent ID, a wallet such as OKX on BNB Chain (56), and a small amount of BNB for gas. Your first mint is free apart from gas. Later mints are $0.10 each, charged in BNB at the Chainlink BNB/USD rate.</p></div>
+        </details>
+        <details class="faq">
+          <summary>Is every runner really unique?<span class="plus">+</span></summary>
+          <div class="a"><p>Yes. The contract maps each token ID to its own spot in the full set of possible images, using a step that never lands on the same spot twice. All 10,000 runners come out different.</p></div>
+        </details>
+        <details class="faq">
+          <summary>Is the art really on-chain?<span class="plus">+</span></summary>
+          <div class="a"><p>Yes. Each token's 32×32 SVG artwork and its metadata are generated by the contract from the token ID. There are no image files hosted on IPFS or a website server for the tokens themselves.</p></div>
+        </details>
+        <details class="faq">
+          <summary>Can I trade runners without an Agent ID?<span class="plus">+</span></summary>
+          <div class="a"><p>Yes. The Agent ID gate applies to minting only. Transfers are open to everyone, and normal marketplace trading does not need an Agent ID.</p></div>
+        </details>
+        <details class="faq">
+          <summary>Where does the mint money go?<span class="plus">+</span></summary>
+          <div class="a"><p>Paid mint proceeds are forwarded in the same mint transaction to the payout wallet set once in the contract at deploy. The contract itself keeps a 0 balance and has no withdraw function for mint proceeds.</p></div>
+        </details>
+        <details class="faq">
+          <summary>Is this the original Chain Runners collection?<span class="plus">+</span></summary>
+          <div class="a"><p>No. BNB Runnerz is its own collection on BNB Chain, with its own name, contract and art, built in a similar CC0 pixel runner spirit. It is not affiliated with the original collection.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="brand">BNB RUNNER<span class="z">Z</span></div>
+        <p>10,000 fully on-chain pixel runners on BNB Chain, every one unique. First mint free, then $0.10. Max 10 per wallet. Agent ID to mint, open trading for everyone.</p>
+      </div>
+      <nav class="links" aria-label="Project links">
+        <a href="https://x.com/BNBRunnerz" target="_blank" rel="noopener">X · @BNBRunnerz</a>
+        <a href="#mint-status">Minted status</a>
+        <a href="#recent">Recently minted</a>
+        <a href="#mint">Mint facts</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </div>
+    <div class="foot-base">
+      <span>SYMBOL BNBR</span>
+      <span>CHAIN BNB SMART CHAIN · 56</span>
+      <span>ROYALTY 1% FIXED</span>
+      <span>CONTRACT: NOT DEPLOYED YET, ADDRESS WILL BE POSTED HERE</span>
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>
